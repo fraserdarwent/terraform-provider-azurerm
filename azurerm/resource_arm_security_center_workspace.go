@@ -7,7 +7,7 @@ import (
 
 	"github.com/terraform-providers/terraform-provider-azurerm/azurerm/helpers/tf"
 
-	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/2017-08-01-preview/security"
+	"github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v1.0/security"
 	"github.com/hashicorp/terraform/helper/resource"
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/terraform-providers/terraform-provider-azurerm/azurerm/helpers/azure"
