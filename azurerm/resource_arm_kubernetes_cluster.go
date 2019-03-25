@@ -3,6 +3,7 @@ package azurerm
 import (
 	"bytes"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-08-01/network"
 	"log"
 	"strings"
 
@@ -572,13 +573,18 @@ func resourceArmKubernetesClusterCreateUpdate(d *schema.ResourceData, meta inter
 	rbacRaw := d.Get("role_based_access_control").([]interface{})
 	rbacEnabled, azureADProfile := expandKubernetesClusterRoleBasedAccessControl(rbacRaw, tenantId)
 
-	apiServerAuthorizedIPRanges := d.Get("api_server_authorized_ip_ranges").(*[]string)
+	apiServerAuthorizedIPRangeInterfaces := d.Get("api_server_authorized_ip_ranges").([]interface{})
+	var apiServerAuthorizedIPRanges []string
+
+	for _, element := range apiServerAuthorizedIPRangeInterfaces {
+		apiServerAuthorizedIPRanges = append(apiServerAuthorizedIPRanges, element.(string))
+	}
 
 	parameters := containerservice.ManagedCluster{
 		Name:     &name,
 		Location: &location,
 		ManagedClusterProperties: &containerservice.ManagedClusterProperties{
-			APIServerAuthorizedIPRanges: apiServerAuthorizedIPRanges,
+			APIServerAuthorizedIPRanges: &apiServerAuthorizedIPRanges,
 			AadProfile:                  azureADProfile,
 			AddonProfiles:               addonProfiles,
 			AgentPoolProfiles:           &agentProfiles,

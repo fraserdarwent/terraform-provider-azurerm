@@ -2,6 +2,7 @@ package azurerm
 
 import (
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-08-01/network"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-02-01/containerservice"
@@ -330,6 +331,14 @@ func dataSourceArmKubernetesCluster() *schema.Resource {
 				},
 			},
 
+			"api_server_authorized_ip_ranges": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Schema{
+					Type: schema.TypeString,
+				},
+			},
+
 			"tags": tagsForDataSourceSchema(),
 		},
 	}
@@ -369,6 +378,7 @@ func dataSourceArmKubernetesClusterRead(d *schema.ResourceData, meta interface{}
 		d.Set("fqdn", props.Fqdn)
 		d.Set("kubernetes_version", props.KubernetesVersion)
 		d.Set("node_resource_group", props.NodeResourceGroup)
+		d.Set("api_server_authorized_ip_ranges", props.APIServerAuthorizedIPRanges)
 
 		addonProfiles := flattenKubernetesClusterDataSourceAddonProfiles(props.AddonProfiles)
 		if err := d.Set("addon_profile", addonProfiles); err != nil {
