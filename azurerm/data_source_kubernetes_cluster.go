@@ -330,12 +330,6 @@ func dataSourceArmKubernetesCluster() *schema.Resource {
 				},
 			},
 
-			"authorized_ip_ranges": {
-				Type:     schema.TypeList,
-				Computed: true,
-				Elem:     schema.TypeString,
-			},
-
 			"tags": tagsForDataSourceSchema(),
 		},
 	}

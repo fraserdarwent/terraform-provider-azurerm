@@ -572,13 +572,13 @@ func resourceArmKubernetesClusterCreateUpdate(d *schema.ResourceData, meta inter
 	rbacRaw := d.Get("role_based_access_control").([]interface{})
 	rbacEnabled, azureADProfile := expandKubernetesClusterRoleBasedAccessControl(rbacRaw, tenantId)
 
-	apiServerAuthorizedIPRanges := d.Get("api_server_authorized_ip_ranges").([]string)
+	apiServerAuthorizedIPRanges := d.Get("api_server_authorized_ip_ranges").(*[]string)
 
 	parameters := containerservice.ManagedCluster{
 		Name:     &name,
 		Location: &location,
 		ManagedClusterProperties: &containerservice.ManagedClusterProperties{
-			APIServerAuthorizedIPRanges: &apiServerAuthorizedIPRanges,
+			APIServerAuthorizedIPRanges: apiServerAuthorizedIPRanges,
 			AadProfile:                  azureADProfile,
 			AddonProfiles:               addonProfiles,
 			AgentPoolProfiles:           &agentProfiles,
