@@ -87,6 +87,8 @@ The following arguments are supported:
 
 * `role_based_access_control` - (Optional) A `role_based_access_control` block. Changing this forces a new resource to be created.
 
+* `api_server_authorized_ip_ranges` - (Optional) The IP ranges to whitelist for incoming traffic to the masters.
+
 * `tags` - (Optional) A mapping of tags to assign to the resource.
 
 ---
