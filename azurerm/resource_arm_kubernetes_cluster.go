@@ -514,6 +514,7 @@ func resourceArmKubernetesCluster() *schema.Resource {
 
 			"api_server_authorized_ip_ranges": {
 				Type:     schema.TypeList,
+				Computed: true,
 				Optional: true,
 				Elem: &schema.Schema{
 					Type: schema.TypeString,
