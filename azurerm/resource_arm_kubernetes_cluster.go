@@ -3,7 +3,6 @@ package azurerm
 import (
 	"bytes"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-08-01/network"
 	"log"
 	"strings"
 

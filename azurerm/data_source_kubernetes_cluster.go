@@ -2,7 +2,6 @@ package azurerm
 
 import (
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/services/network/mgmt/2018-08-01/network"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2019-02-01/containerservice"
