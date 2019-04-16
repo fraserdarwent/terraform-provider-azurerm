@@ -89,6 +89,8 @@ The following arguments are supported:
 
 * `api_server_authorized_ip_ranges` - (Optional) The IP ranges to whitelist for incoming traffic to the masters.
 
+-> **Note:** `api_server_authorized_ip_ranges` Is currently in Preview on an opt-in basis.
+
 * `tags` - (Optional) A mapping of tags to assign to the resource.
 
 ---
