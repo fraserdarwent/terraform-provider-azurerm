@@ -514,10 +514,10 @@ func resourceArmKubernetesCluster() *schema.Resource {
 
 			"api_server_authorized_ip_ranges": {
 				Type:     schema.TypeList,
-				Computed: true,
 				Optional: true,
 				Elem: &schema.Schema{
-					Type: schema.TypeString,
+					Type:         schema.TypeString,
+					ValidateFunc: validate.CIDR,
 				},
 			},
 		},
@@ -574,18 +574,13 @@ func resourceArmKubernetesClusterCreateUpdate(d *schema.ResourceData, meta inter
 	rbacRaw := d.Get("role_based_access_control").([]interface{})
 	rbacEnabled, azureADProfile := expandKubernetesClusterRoleBasedAccessControl(rbacRaw, tenantId)
 
-	apiServerAuthorizedIPRangeInterfaces := d.Get("api_server_authorized_ip_ranges").([]interface{})
-	var apiServerAuthorizedIPRanges []string
-
-	for _, element := range apiServerAuthorizedIPRangeInterfaces {
-		apiServerAuthorizedIPRanges = append(apiServerAuthorizedIPRanges, element.(string))
-	}
+	apiServerAuthorizedIPRanges := expandApiServerAuthorizedIPRangeInterfaces(d)
 
 	parameters := containerservice.ManagedCluster{
 		Name:     &name,
 		Location: &location,
 		ManagedClusterProperties: &containerservice.ManagedClusterProperties{
-			APIServerAuthorizedIPRanges: &apiServerAuthorizedIPRanges,
+			APIServerAuthorizedIPRanges: apiServerAuthorizedIPRanges,
 			AadProfile:                  azureADProfile,
 			AddonProfiles:               addonProfiles,
 			AgentPoolProfiles:           &agentProfiles,
@@ -1275,4 +1270,21 @@ func flattenKubernetesClusterKubeConfigAAD(config kubernetes.KubeConfigAAD) []in
 	values["cluster_ca_certificate"] = cluster.ClusterAuthorityData
 
 	return []interface{}{values}
+}
+
+func expandApiServerAuthorizedIPRangeInterfaces(d *schema.ResourceData) *[]string {
+	value, exists := d.GetOk("api_server_authorized_ip_ranges")
+
+	if !exists {
+		return nil
+	}
+
+	apiServerAuthorizedIPRangeConfigs := value.([]interface{})
+	apiServerAuthorizedIPRanges := make([]string, 0)
+
+	for _, element := range apiServerAuthorizedIPRangeConfigs {
+		apiServerAuthorizedIPRanges = append(apiServerAuthorizedIPRanges, element.(string))
+	}
+
+	return &apiServerAuthorizedIPRanges
 }
